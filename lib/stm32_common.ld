@@ -5,7 +5,7 @@ SECTIONS {
 	.vectors : {
 		*(.vectors)
 	} > vectors
-	
+
 	.text : {
 		*(.text)
 		
@@ -17,12 +17,14 @@ SECTIONS {
 		
 		__text_end__ = .;
 	} > flash
-	
+
 	.data : {
 		__data_begin__ = .;
-		
+
 		*(.data)
-		
+
+		. = ALIGN(4);
+
 		__data_end__ = .;
 	} > ram AT>flash
 
@@ -30,9 +32,11 @@ SECTIONS {
 
 	.bss : {
 		__bss_begin__ = .;
-		
+
 		*(.bss)
-		
+
+		. = ALIGN(4);
+
 		__bss_end__ = .;
 	} > ram
 

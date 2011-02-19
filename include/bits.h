@@ -13,7 +13,7 @@ typedef signed short s16;
 typedef signed char  s8;
 
 #define CONFIG_AREA(type, name, addr) \
-			struct type* const name = (struct type*) addr;
+			static struct type* const name = (struct type*) addr;
 
 #define BIT(n)		(1 << (n))
 #define MASK(nbits)	((1 << (nbits)) - 1)
