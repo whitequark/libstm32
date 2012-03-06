@@ -1,22 +1,19 @@
-TUPLE   = arm-none-eabi-
+BUILD_LIBSTM32 = yes
 
-AS      = $(TUPLE)as
-AR      = $(TUPLE)ar crs
-CC      = $(TUPLE)cc
+include Makefile.inc
 
-CFLAGS  = -mcpu=cortex-m3 -mthumb -Wall -Werror -fno-hosted --std=gnu99 -Os -Iinclude
+all: lib/libstm32.a $(patsubst %.s,%.o,src/init.o $(wildcard src/soc/*))
+	cp src/init.o src/soc/*.o lib/
 
-all: lib/libstm32.a
+lib/libstm32.a: src/rand.o src/memset.o
+	$(AR) crs $@ $^
 
-lib/libstm32.a: src/init.o src/rand.o src/memset.o
-	$(AR) $@ $^
+generate:
+	tools/genreg.rb -d include/stm32 -- tools/def/*
 
-%.o: %.s
-	$(AS) -o $@ $<
-
-%.o: %.c
-	$(CC) -c -o $@ $< $(CFLAGS)
-
-.PHONY: clean
+.PHONY: clean distclean
 clean:
-	rm -f src/*.o lib/*.a
+	rm -f src/*.o src/soc/*.o lib/*.a lib/*.o
+
+distclean:
+	rm -f include/stm32/*.h
