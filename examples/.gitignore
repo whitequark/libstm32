@@ -1,2 +1,2 @@
-firmware.*
+*.elf
 *.o

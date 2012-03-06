@@ -32,6 +32,7 @@ ifneq ($(CLANG),)
 	$(LLC) $(@:.elf=.llvm.bc)
 	$(AS) -o $(@:.elf=.llvm.elf) $(@:.elf=.llvm.s)
 	$(LD) -o $@ $(@:.elf=.llvm.elf) $(FIN_LDFLAGS)
+	$(RM) $(@:.elf=.llvm)*
 	$(SIZE) $@
 
 else
